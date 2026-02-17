@@ -1,21 +1,31 @@
-import React from "react";
+import axios from "axios";
 
-const BASE = "http://localhost:8080";
+const API_BASE_URL = "http://localhost:8080";
 
-export async function login<T>(username: string, password: string): Promise<T> {
-  const res = await fetch(
-    `${BASE}/api/auth/login?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
-    {
-      method: "POST",
-    },
-  );
-  return handleResponse(res);
-}
+export const authApi = {
+  login: (username: string, password: string) =>
+    axios.post(
+      `${API_BASE_URL}/api/auth/login`,
+      { username, password },
+      { withCredentials: true },
+    ),
 
-export async function handleResponse<T>(res: Response): Promise<T> {
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(text || res.statusText);
-  }
-  return res.json();
-}
+  register: (username: string, password: string) =>
+    axios.post(
+      `${API_BASE_URL}/api/auth/register`,
+      { username, password },
+      { withCredentials: true },
+    ),
+
+  getCurrentUser: () =>
+    axios.get(`${API_BASE_URL}/api/auth/me`, {
+      withCredentials: true,
+    }),
+
+  logout: () =>
+    axios.post(
+      `${API_BASE_URL}/api/auth/logout`,
+      {},
+      { withCredentials: true },
+    ),
+};

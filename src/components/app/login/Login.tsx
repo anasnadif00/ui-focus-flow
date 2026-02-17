@@ -6,22 +6,9 @@ const Login: React.FC = () => {
   //const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [login, user] = useAuth();
 
-  function handleSignIn():
-    | React.MouseEventHandler<HTMLButtonElement>
-    | undefined {
-    try {
-      const response = await login(email, password);
-      useNavigate("/app");
-    } catch (error) {
-      console.error("Login failed:", error);
-      alert("Login failed: " + error.message);
-    } finally {
-      setEmail("");
-      setPassword("");
-      setLoading(false);
-    }
-  }
+  const handleSignIn = () => {};
 
   return (
     <div>
