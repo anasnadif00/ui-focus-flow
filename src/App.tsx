@@ -13,7 +13,6 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/app/login" element={<Login />} />
-
           <Route
             path="/app"
             element={
@@ -22,7 +21,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/app/blocks"
             element={

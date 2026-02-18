@@ -1,14 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../../api/authApi";
+import { useAuth } from "../../../hooks/useAuth";
 
 const Login: React.FC = () => {
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [login, user] = useAuth();
+  const { login, isLoading, error, user } = useAuth();
 
-  const handleSignIn = () => {};
+  useEffect(() => {
+    if (user) {
+      navigate("/app");
+    }
+  }, [user, navigate]);
+
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await login(email, password);
+    } catch (err) {
+      // Error is handled by context and displayed below
+    }
+  };
 
   return (
     <div>
@@ -101,7 +114,12 @@ const Login: React.FC = () => {
               </div>
             </div>
 
-            <form className="space-y-6" action="#" method="POST">
+            <form className="space-y-6" onSubmit={handleSignIn}>
+              {error && (
+                <div className="rounded-lg bg-red-50 p-3 border border-red-200">
+                  <p className="text-sm text-red-700">{error}</p>
+                </div>
+              )}
               <div>
                 <label
                   htmlFor="email"
@@ -116,6 +134,7 @@ const Login: React.FC = () => {
                     type="email"
                     autoComplete="email"
                     required
+                    value={email}
                     className="appearance-none block w-full px-3 py-2.5 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent sm:text-sm transition-shadow"
                     placeholder="you@example.com"
                     onChange={(e) => setEmail(e.target.value)}
@@ -137,6 +156,7 @@ const Login: React.FC = () => {
                     type="password"
                     autoComplete="current-password"
                     required
+                    value={password}
                     className="appearance-none block w-full px-3 py-2.5 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent sm:text-sm transition-shadow"
                     placeholder="••••••••"
                     onChange={(e) => setPassword(e.target.value)}
@@ -173,10 +193,10 @@ const Login: React.FC = () => {
               <div>
                 <button
                   type="submit"
-                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-all hover:shadow-lg transform active:scale-[0.98]"
-                  onClick={handleSignIn()}
+                  disabled={isLoading}
+                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-all hover:shadow-lg transform active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Sign in
+                  {isLoading ? "Signing in..." : "Sign in"}
                 </button>
               </div>
             </form>
