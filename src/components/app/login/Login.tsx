@@ -1,31 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../../hooks/useAuth";
+import { useSignIn } from "@clerk/clerk-react";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const { signIn, isLoaded, setActive } = useSignIn();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, isLoading, error, user } = useAuth();
-
-  useEffect(() => {
-    if (user) {
-      navigate("/app");
-    }
-  }, [user, navigate]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isLoaded || !signIn) return;
+
+    setIsLoading(true);
+    setError(null);
+
     try {
-      await login(email, password);
+      const result = await signIn.create({
+        identifier: email,
+        password,
+      });
+
+      if (result.status === "complete") {
+        await setActive({ session: result.createdSessionId });
+        navigate("/app");
+      }
     } catch (err) {
-      // Error is handled by context and displayed below
+      const errorMsg = err instanceof Error ? err.message : "Login failed";
+      setError(errorMsg);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div>
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md mt-10">
         <div className="flex justify-center">
           <Link to="/" className="flex items-center gap-2 group">
             <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform duration-200 shadow-sm">

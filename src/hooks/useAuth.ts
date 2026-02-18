@@ -1,13 +1,19 @@
-import { useContext } from "react";
-import { AuthContext } from "../types/auth";
-import type { AuthContextType } from "../types/auth";
+import { useUser, useAuth as useClerkAuth } from "@clerk/clerk-react";
 
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
+export const useAuth = () => {
+  const { user, isLoaded, isSignedIn } = useUser();
+  const { signOut, getToken } = useClerkAuth();
 
-  if (!context) {
-    throw new Error("useAuth must be used within AuthProvider");
-  }
-
-  return context;
+  return {
+    user: isSignedIn
+      ? {
+          id: user?.id || "",
+          username: user?.emailAddresses[0]?.emailAddress || "",
+        }
+      : null,
+    isLoading: !isLoaded,
+    isSignedIn,
+    logout: signOut,
+    getToken,
+  };
 };
