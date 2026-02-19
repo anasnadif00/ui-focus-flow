@@ -3,3 +3,81 @@
 @theme {
   --font-sans: system-ui, sans-serif;
 }
+
+/* ── Clerk Card: strip default chrome ── */
+.cl-card {
+  box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+/* ── Clerk Footer: hide it ── */
+.cl-footer {
+  display: none !important;
+}
+
+/* ── Social login buttons ── */
+.cl-socialButtonsBlockButton {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.75rem !important;
+  padding: 0.625rem 1rem !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  transition: all 0.15s ease !important;
+}
+.cl-socialButtonsBlockButton:hover {
+  background: #f9fafb !important;
+  border-color: #d1d5db !important;
+}
+
+/* ── Form field inputs ── */
+.cl-formFieldInput {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.75rem !important;
+  padding: 0.75rem 1rem !important;
+  background: #fafafa !important;
+  box-shadow: none !important;
+  transition: all 0.15s ease !important;
+}
+.cl-formFieldInput:focus {
+  border-color: #000 !important;
+  background: #fff !important;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* ── Form field labels ── */
+.cl-formFieldLabel {
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  color: #374151 !important;
+}
+
+/* ── Primary submit button ── */
+.cl-formButtonPrimary {
+  background: #000 !important;
+  color: #fff !important;
+  border-radius: 0.75rem !important;
+  padding: 0.75rem 1.5rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  border: none !important;
+  box-shadow: none !important;
+  transition: all 0.15s ease !important;
+  text-transform: none !important;
+}
+.cl-formButtonPrimary:hover {
+  background: #1f2937 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+.cl-formButtonPrimary:active {
+  transform: scale(0.98) !important;
+}
+
+/* ── Divider line ── */
+.cl-dividerLine {
+  background: #e5e7eb !important;
+}
+.cl-dividerText {
+  color: #9ca3af !important;
+  font-size: 0.875rem !important;
+}
