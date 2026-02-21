@@ -13,7 +13,7 @@ const Registration: React.FC = () => {
         linkTo: "/app/login",
       }}
     >
-      <div className="pl-4">
+      <div className="pl-5.5">
       <SignUp
         path="/app/register"
         routing="path"
