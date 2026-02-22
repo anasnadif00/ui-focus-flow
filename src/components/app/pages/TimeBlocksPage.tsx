@@ -7,17 +7,17 @@ import {
   deleteTimeBlock,
 } from "../../../api/timeBlocksApi";
 import CreateTimeBlockForm from "../CreateTimeBlockForm";
-
-const USER_ID = "demo";
+import { useAuth } from "../../../hooks/useAuth";
 
 export default function TimeBlocksPage() {
+  const { user, isLoading: authLoading } = useAuth();
   const [blocks, setBlocks] = useState<TimeBlock[]>([]);
   const [loading, setLoading] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await listTimeBlocks(USER_ID);
+      const data = await listTimeBlocks();
       setBlocks(data);
     } catch (err) {
       console.error(err);
@@ -28,12 +28,14 @@ export default function TimeBlocksPage() {
   }, []);
 
   useEffect(() => {
-    load();
-  }, [load]);
+    if (!authLoading && user) {
+      load();
+    }
+  }, [authLoading, user, load]);
 
   const handleStart = async (id: string) => {
     try {
-      await startTimeBlock(id, USER_ID);
+      await startTimeBlock(id);
       await load();
     } catch (err) {
       console.error(err);
@@ -43,7 +45,7 @@ export default function TimeBlocksPage() {
 
   const handleComplete = async (id: string) => {
     try {
-      await completeTimeBlock(id, USER_ID);
+      await completeTimeBlock(id);
       await load();
     } catch (err) {
       console.error(err);
@@ -66,12 +68,22 @@ export default function TimeBlocksPage() {
     }
   };
 
+  if (authLoading) {
+    return <div style={{ padding: 20 }}>Loading authentication…</div>;
+  }
+
+  if (!user) {
+    return (
+      <div style={{ padding: 20 }}>Please sign in to view your time blocks.</div>
+    );
+  }
+
   return (
     <div style={{ padding: 20 }}>
       <h1>Time Blocks</h1>
 
       <div style={{ marginBottom: 16 }}>
-        <CreateTimeBlockForm userId={USER_ID} onCreated={load} />
+        <CreateTimeBlockForm onCreated={load} />
       </div>
 
       {loading ? (

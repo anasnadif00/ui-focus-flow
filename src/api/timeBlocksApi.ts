@@ -1,75 +1,37 @@
 import type { TimeBlock } from "../types/TimeBlock";
+import api from "./apiClient";
 
-const BASE = "http://localhost:8080";
+/**
+ * Time-block API layer.
+ *
+ * All auth is handled automatically by the apiClient interceptor —
+ * no need to pass userId or tokens here. The backend reads the
+ * authenticated user from the JWT.
+ */
 
-async function handleResponse<T>(res: Response): Promise<T> {
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(text || res.statusText);
-  }
-  return res.json();
-}
-
-export async function listTimeBlocks(userId: string): Promise<TimeBlock[]> {
-  const res = await fetch(
-    `${BASE}/api/blocks?userId=${encodeURIComponent(userId)}`
-  );
-  return handleResponse<TimeBlock[]>(res);
+export async function listTimeBlocks(): Promise<TimeBlock[]> {
+  const { data } = await api.get<TimeBlock[]>("/blocks");
+  return data;
 }
 
 export async function createTimeBlock(
-  userId: string,
   title: string,
   durationMinutes: number
 ): Promise<TimeBlock> {
-  const res = await fetch(
-    `${BASE}/api/blocks?userId=${encodeURIComponent(
-      userId
-    )}&title=${encodeURIComponent(title)}&durationMinutes=${durationMinutes}`,
-    {
-      method: "POST",
-    }
-  );
-
-  return handleResponse<TimeBlock>(res);
+  const { data } = await api.post<TimeBlock>("/blocks", null, {
+    params: { title, durationMinutes },
+  });
+  return data;
 }
 
-export async function startTimeBlock(
-  id: string,
-  userId: string
-): Promise<void> {
-  const res = await fetch(
-    `${BASE}/api/blocks/${encodeURIComponent(
-      id
-    )}/start?userId=${encodeURIComponent(userId)}`,
-    {
-      method: "POST",
-    }
-  );
-  if (!res.ok) throw new Error(await res.text());
+export async function startTimeBlock(id: string): Promise<void> {
+  await api.post(`/blocks/${encodeURIComponent(id)}/start`);
 }
 
-export async function completeTimeBlock(
-  id: string,
-  userId: string
-): Promise<void> {
-  const res = await fetch(
-    `${BASE}/api/blocks/${encodeURIComponent(
-      id
-    )}/complete?userId=${encodeURIComponent(userId)}`,
-    {
-      method: "POST",
-    }
-  );
-  if (!res.ok) throw new Error(await res.text());
+export async function completeTimeBlock(id: string): Promise<void> {
+  await api.post(`/blocks/${encodeURIComponent(id)}/complete`);
 }
 
 export async function deleteTimeBlock(id: string): Promise<void> {
-  const res = await fetch(`${BASE}/api/blocks/${encodeURIComponent(id)}`, {
-    method: "DELETE",
-  });
-
-  if (!res.ok) {
-    throw new Error(`Delete failed: ${res.status}`);
-  }
+  await api.delete(`/blocks/${encodeURIComponent(id)}`);
 }

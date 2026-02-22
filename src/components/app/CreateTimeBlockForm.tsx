@@ -3,11 +3,10 @@ import { createTimeBlock } from "../../api/timeBlocksApi";
 import type { TimeBlock } from "../../types/TimeBlock";
 
 interface Props {
-  userId: string;
   onCreated: (block?: TimeBlock | null, tempId?: string) => void;
 }
 
-export default function CreateTimeBlockForm({ userId, onCreated }: Props) {
+export default function CreateTimeBlockForm({ onCreated }: Props) {
   const [title, setTitle] = useState("");
   const [duration, setDuration] = useState<number>(25);
   const [loading, setLoading] = useState(false);
@@ -21,7 +20,7 @@ export default function CreateTimeBlockForm({ userId, onCreated }: Props) {
 
     const optimisticBlock: TimeBlock = {
       id: tempId,
-      userId: userId,
+      userId: "",         // backend assigns the real userId from the JWT
       title: trimmedTitle,
       durationMinutes: duration,
       status: "SCHEDULED",
@@ -37,10 +36,10 @@ export default function CreateTimeBlockForm({ userId, onCreated }: Props) {
     setLoading(true);
 
     try {
-      // 2️⃣ backend call
-      const created = await createTimeBlock(userId, trimmedTitle, duration);
+      // 2️⃣ backend call — no userId needed, JWT handles identity
+      const created = await createTimeBlock(trimmedTitle, duration);
 
-      // 3️⃣ replace temp block with real one
+      // 3️⃣ replace temp block with the real one
       onCreated(created, tempId);
     } catch (err) {
       console.error(err);
