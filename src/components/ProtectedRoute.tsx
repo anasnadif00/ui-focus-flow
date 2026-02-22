@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useUser, useAuth } from "@clerk/clerk-react";
 import { setAuthTokenProvider } from "../api/apiClient";
 import api from "../api/apiClient";
-
+ 
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
