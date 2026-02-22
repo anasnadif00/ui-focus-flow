@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/app/login/Login";
 import Registration from "./components/app/login/Registration";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import Homepage from "./components/app/pages/Homepage";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
           path="/app"
           element={
             <ProtectedRoute>
-              <TimeBlocksPage />
+              <Homepage/>
             </ProtectedRoute>
           }
         />
