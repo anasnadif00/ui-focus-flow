@@ -39,8 +39,8 @@ const AddBlockModal = ({ onClose }: AddBlockModalProps) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200 overflow-y-auto">
-      
+    /* Modal Container   removed backdrop-blur-sm for performance reason */
+    <div className="fixed inset-0 bg-black/50  z-50 flex items-center justify-center p-4 animate-in fade-in duration-200 overflow-y-auto">
       {/* Increased max-width because we have more fields now */}
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-200 my-8">
         
@@ -60,7 +60,6 @@ const AddBlockModal = ({ onClose }: AddBlockModalProps) => {
         {/* Body Container - Made scrollable in case screen is small */}
         <div className="p-5 space-y-6 max-h-[70vh] overflow-y-auto">
           
-          {/* Section 1: What are you doing? */}
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-1.5">Task Name</label>
@@ -68,7 +67,7 @@ const AddBlockModal = ({ onClose }: AddBlockModalProps) => {
                 type="text" 
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g., Read React documentation"
+                placeholder="e.g., Studying X"
                 className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-black focus:border-black outline-none transition-all"
                 autoFocus
               />

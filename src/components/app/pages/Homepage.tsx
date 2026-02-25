@@ -9,11 +9,13 @@ import WeeklyChart from '../dashboard/WeeklyChart';
 import InsightsCard from '../dashboard/InsightsCard';
 import RecentSessionsCard from '../dashboard/RecentSessionsCard';
 import { useAuth } from '../../../hooks/useAuth';
+import AddBlockModal from '../dashboard/AddBlockModal';
 
 const Homepage = () => {
 
   const [hasActiveSession] = useState(true);
   const { user } = useAuth();
+  const [showAddBlockModal, setShowAddBlockModal] = useState(false);
 
   const today = new Date();
 
@@ -27,8 +29,10 @@ const Homepage = () => {
     <AppLayout 
       title={`Welcome back`} 
       subtitle={formattedDate}
-      onAddBlock={() => console.log('Open Add Block Modal')}
+      onAddBlock={() => setShowAddBlockModal(true)}
     >
+      {showAddBlockModal && <AddBlockModal onClose={() => setShowAddBlockModal(false)} />}
+
       <DailyFocusBanner />
       
       {hasActiveSession && <ActiveSessionHero />}

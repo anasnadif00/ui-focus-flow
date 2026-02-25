@@ -27,14 +27,6 @@ const TopBar = ({ title = "Welcome back, Anas", subtitle = "Sunday, February 22"
           Add Block
         </button>
         
-        <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-[#e8e8e8] rounded-xl px-4 py-2.5 text-[#aaa] hover:border-[#ccc] transition-all duration-300 cursor-pointer shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <span className="text-[13px]">Search...</span>
-          <kbd className="ml-3 bg-[#f0f0f0] text-[#bbb] rounded px-1.5 py-0.5 text-[10px] font-mono font-semibold">⌘K</kbd>
-        </div>
-        
         <button className="w-10 h-10 bg-white/80 backdrop-blur-sm border border-[#e8e8e8] rounded-xl flex items-center justify-center text-[#aaa] hover:text-[#555] hover:border-[#ccc] transition-all duration-300 shadow-[0_1px_4px_rgba(0,0,0,0.04)] cursor-pointer relative">
           <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
