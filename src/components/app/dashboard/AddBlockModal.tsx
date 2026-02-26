@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createTimeBlock } from '../../../api/timeBlocksApi';
 
 interface AddBlockModalProps {
   onClose: () => void;
@@ -23,18 +24,28 @@ const AddBlockModal = ({ onClose }: AddBlockModalProps) => {
   const categories = ['Study', 'Work', 'Reading', 'Coding', 'Writing', 'Other'];
   const breakDurations = [5, 10, 15];
 
-  const handleCreate = () => {
-    // This is where we will eventually save it to the backend!
-    console.log({
-      title,
-      category,
-      duration,
-      breakCount,
-      breakDuration,
-      scheduleType,
-      scheduledDate: scheduleType === 'later' ? scheduledDate : null,
-      scheduledTime: scheduleType === 'later' ? scheduledTime : null,
-    });
+  const handleCreate = async () => {
+    let scheduledStartIso: string | undefined = undefined;
+    if (scheduleType === 'later' && scheduledDate && scheduledTime) {
+      const dateTime = new Date(`${scheduledDate}T${scheduledTime}`);
+      scheduledStartIso = dateTime.toISOString();
+    }
+
+    try {
+      await createTimeBlock({
+        title,
+        category,
+        durationMinutes: duration,
+        breakCount,
+        breakDuration,
+        scheduledStart: scheduledStartIso,
+      });
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to save block');
+    }
+    
     onClose();
   };
 

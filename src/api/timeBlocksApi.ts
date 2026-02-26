@@ -15,12 +15,16 @@ export async function listTimeBlocks(): Promise<TimeBlock[]> {
 }
 
 export async function createTimeBlock(
-  title: string,
-  durationMinutes: number
+  payload: {
+    title: string;
+    category?: string;
+    durationMinutes: number;
+    breakCount?: number;
+    breakDuration?: number;
+    scheduledStart?: string;
+  }
 ): Promise<TimeBlock> {
-  const { data } = await api.post<TimeBlock>("/blocks", null, {
-    params: { title, durationMinutes },
-  });
+  const { data } = await api.post<TimeBlock>("/blocks", payload);
   return data;
 }
 

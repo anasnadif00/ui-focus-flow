@@ -37,7 +37,10 @@ export default function CreateTimeBlockForm({ onCreated }: Props) {
 
     try {
       // 2️⃣ backend call — no userId needed, JWT handles identity
-      const created = await createTimeBlock(trimmedTitle, duration);
+      const created = await createTimeBlock({
+        title: trimmedTitle,
+        durationMinutes: duration,
+      });
 
       // 3️⃣ replace temp block with the real one
       onCreated(created, tempId);
