@@ -1,14 +1,50 @@
-import React from 'react';
 
-const StatsRow = () => {
+
+interface StatsRowProps {
+  totalPlannedMinutes: number;
+  completedMinutes: number;
+  totalBlocks: number;
+  completedBlocks: number;
+}
+
+const StatsRow = ({ totalPlannedMinutes, completedMinutes, totalBlocks, completedBlocks }: StatsRowProps) => {
+  const plannedHours = Math.floor(totalPlannedMinutes / 60);
+  const plannedMins = totalPlannedMinutes % 60;
+  const completedHours = Math.floor(completedMinutes / 60);
+  const completedMins = completedMinutes % 60;
+
+  const stats = [
+    {
+      label: 'Planned Today',
+      value: plannedHours > 0 ? `${plannedHours}h ${plannedMins}m` : `${plannedMins}m`,
+      sub: `${totalBlocks} block${totalBlocks !== 1 ? 's' : ''}`,
+      icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>,
+    },
+    {
+      label: 'Completed',
+      value: completedHours > 0 ? `${completedHours}h ${completedMins}m` : `${completedMins}m`,
+      sub: `${completedBlocks} block${completedBlocks !== 1 ? 's' : ''} done`,
+      icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M5 13l4 4L19 7" /></svg>,
+    },
+    {
+      label: 'Remaining',
+      value: totalBlocks - completedBlocks > 0
+        ? `${Math.floor((totalPlannedMinutes - completedMinutes) / 60)}h ${(totalPlannedMinutes - completedMinutes) % 60}m`
+        : 'All done!',
+      sub: `${totalBlocks - completedBlocks} block${totalBlocks - completedBlocks !== 1 ? 's' : ''} left`,
+      icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+    },
+    {
+      label: 'Completion Rate',
+      value: totalBlocks > 0 ? `${Math.round((completedBlocks / totalBlocks) * 100)}%` : '—',
+      sub: totalBlocks > 0 ? 'of today\'s blocks' : 'No blocks yet',
+      icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>,
+    },
+  ];
+
   return (
     <div className="grid grid-cols-4 gap-4 mb-8">
-      {[
-        { label: 'Planned Today', value: '3h 20m', sub: '4 blocks', icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg> },
-        { label: 'Completed', value: '1h 40m', sub: '1 block done', icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M5 13l4 4L19 7" /></svg> },
-        { label: 'Streak', value: '5 days', sub: 'Personal best!', icon: <span className="text-lg leading-none">🔥</span> },
-        { label: 'Focus Score', value: '87%', sub: '↑ 4% vs last week', icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg> },
-      ].map((stat) => (
+      {stats.map((stat) => (
         <div key={stat.label} className="bg-gradient-to-br from-white to-[#fafafa] rounded-2xl p-5 border border-[#eee]/80 hover:border-[#ddd] shadow-[0_1px_4px_rgba(0,0,0,0.03)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-all duration-300 cursor-default">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#f5f5f5] to-[#eee] flex items-center justify-center text-[#888] mb-3">
             {stat.icon}

@@ -3,9 +3,10 @@ import { createTimeBlock } from '../../../api/timeBlocksApi';
 
 interface AddBlockModalProps {
   onClose: () => void;
+  onCreated?: () => void;
 }
 
-const AddBlockModal = ({ onClose }: AddBlockModalProps) => {
+const AddBlockModal = ({ onClose, onCreated }: AddBlockModalProps) => {
   // 1. Basic Info
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('Study'); // Default to Study
@@ -40,7 +41,7 @@ const AddBlockModal = ({ onClose }: AddBlockModalProps) => {
         breakDuration,
         scheduledStart: scheduledStartIso,
       });
-      window.location.reload();
+      if (onCreated) onCreated();
     } catch (err) {
       console.error(err);
       alert('Failed to save block');

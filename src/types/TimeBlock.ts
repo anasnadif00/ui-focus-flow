@@ -9,6 +9,9 @@ export interface TimeBlock {
   breakCount?: number;
   breakDuration?: number;
   scheduledStart?: string;
+  scheduledEnd?: string;
+  actualStart?: string;
+  actualEnd?: string;
   status: TimeBlockStatus;
   optimistic?: boolean;
 }

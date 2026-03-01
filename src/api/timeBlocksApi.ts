@@ -39,3 +39,21 @@ export async function completeTimeBlock(id: string): Promise<void> {
 export async function deleteTimeBlock(id: string): Promise<void> {
   await api.delete(`/blocks/${encodeURIComponent(id)}`);
 }
+
+export async function skipTimeBlock(id: string): Promise<void> {
+  await api.post(`/blocks/${encodeURIComponent(id)}/skip`);
+}
+
+export async function updateTimeBlock(
+  id: string,
+  payload: {
+    title: string;
+    category?: string;
+    durationMinutes: number;
+    breakCount?: number;
+    breakDuration?: number;
+    scheduledStart?: string;
+  }
+): Promise<void> {
+  await api.put(`/blocks/${encodeURIComponent(id)}`, payload);
+}

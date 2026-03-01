@@ -1,11 +1,12 @@
 import "./App.css";
-import TimeBlocksPage from "./components/app/pages/TimeBlocksPage";
 import LandingPage from "./components/landing/LandingPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/app/login/Login";
 import Registration from "./components/app/login/Registration";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import Homepage from "./components/app/pages/Homepage";
+import HistoryPage from "./components/app/pages/HistoryPage";
+import AnalyticsPage from "./components/app/pages/AnalyticsPage";
 
 function App() {
   return (
@@ -18,7 +19,23 @@ function App() {
           path="/app"
           element={
             <ProtectedRoute>
-              <Homepage/>
+              <Homepage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/app/history"
+          element={
+            <ProtectedRoute>
+              <HistoryPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/app/analytics"
+          element={
+            <ProtectedRoute>
+              <AnalyticsPage />
             </ProtectedRoute>
           }
         />
